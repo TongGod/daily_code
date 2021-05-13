@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}全部影视数据{% endblock %}
+{% block home %}
+    <div>
+        <table id="table" class="table table-hover table-bordered table-condensed" style="border-color: #070707;">
+            <tr>
+                <th>排名</th>
+                <th>电影名称</th>
+                <th>电影封面</th>
+                <th>外文名称</th>
+                <th>豆瓣评分</th>
+                <th>评论人数</th>
+                <th>上映年份</th>
+                <th>制片国家/地区</th>
+                <th>类型</th>
+                <th>操作</th>
+            </tr>
+            {% for i in movie_list %}
+                <tr>
+                    <td>TOP{{ i.top }}</td>
+                    <td><a href="{{ i.movie_url }}">{{ i.name_chinese }}</a></td>
+                    <td><img width="100px" height="140px" src="{{ i.img_url }}" alt="{{ i.name_chinese }}"/></td>
+                    <td>
+                        {% if i.name_out == "" %}
+                            {{ '无' }}
+                        {% else %}
+                            {{ i.name_out }}
+                        {% endif %}
+                    </td>
+                    <td>{{ i.score }}</td>
+                    <td>{{ i.score_num }}</td>
+                    <td>{{ i.year }}</td>
+                    <td>{{ i.country }}</td>
+                    <td>{{ i.type }}</td>
+                    <td>
+                            <span class="{{ i.click_state }}" style="color: red;font-size: 20px" id="heart{{ i.top }}" onclick="heart_or_empty({{ i.top }},'{{ i.name_chinese }}')"></span>
+                            {{ i.likes_num }}
+                        <br/>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapse{{ i.top }}" onclick="Show({{ i.top }})">
+                                        <span class="glyphicon glyphicon-comment"></span>全部评论
+                                    </a>
+                                </h4>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="show_or_hide{{ i.top }}" style="display: none">
+                    <td colspan="10">
+                        <div id="collapse{{ i.top }}" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <ul class="list-group" style="text-align: left">
+                                    <li class="list-group-item">
+                                        <div>
+                                            {% load filters %}
+                                            <img width="40" height="40" src="{{ request.build_absolute_uri|get_url }}{{ img_head }}" class="img-circle">
+                                            <span class="label label-success">{{ username }}</span>
+                                        </div>
+                                        <div>
+                                            <form method="post" action="/commentinfo/" class="form-inline" name="myform">
+                                                <textarea name="com_info" placeholder="请输入评论..." cols="100" rows="5"></textarea>
+                                                <input type="reset" value="重置" class="btn bg-info">
+                                                <input type="text" name="movie_name" value="{{ i.name_chinese }}" hidden>
+                                                <input type="text" name="user_name" value="{{ username }}" hidden>
+                                                <input type="submit" value="提交" class="btn bg-primary">
+                                            </form>
+                                        </div>
+                                    </li>
+                                    {% for c in i.comment_info %}
+                                        <li class="list-group-item">
+                                            <div>
+                                                {% load filters %}
+                                                <img width="40" height="40" src="{{ request.build_absolute_uri|get_url }}{{ c.2 }}" class="img-circle">
+                                                <span class="label label-info">{{ c.0 }}</span>
+                                            </div>
+                                            <p>{{ c.1 }}</p>
+                                            </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="text-center">
+        {% if data %}
+            <ul id="pages" class="pagination">
+                {% if data.first %}
+                    <li><a href="?page=1">1</a></li>
+                {% endif %}
+                {% if data.left %}
+                    {% if data.left_has_more %}
+                        <li><span>...</span></li>
+                    {% endif %}
+                    {% for i in data.left %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+                {% endif %}
+                <li class="active"><a href="?page={{ data.page }}">{{ data.page }}</a></li>
+                {% if data.right %}
+                    {% for i in data.right %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+                    {% if data.right_has_more %}
+                        <li><span>...</span></li>
+                    {% endif %}
+                {% endif %}
+                {% if data.last %}
+                    <li><a href="?page={{ data.total_pages }}">{{ data.total_pages }}</a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+    <script type="text/javascript">
+    function Show(id){
+        var box = document.getElementById("show_or_hide" + id)
+
+        if(box.style.display === 'none'){
+            box.style.display = '';
+        }else{
+            box.style.display = 'none'
+        }
+    }
+
+    // jquery请求点赞图标状态
+    function heart_or_empty(id,name){
+        var heart = document.getElementById("heart" + id);
+        //如果已经点过赞就取消点赞
+        if (heart.className == 'glyphicon glyphicon-heart'){
+            $.getJSON("{% url 'clickcomment' %}?heart=reduce&username={{ username }}&name=" + name,function(data,status){
+                heart.className = data.class_name;
+                location.reload();
+            });
+        }
+        else {
+            $.getJSON("{% url 'clickcomment' %}?heart=add&username={{ username }}&name=" + name,function(data,status){
+                 heart.className = data.class_name;
+                 location.reload();
+            });
+        }
+    }
+
+    </script>
+{% endblock %}

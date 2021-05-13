@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>{% block title %}豆瓣top250影视数据分析系统{% endblock %}</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body class="container" style="background: #c6d5e7">
+{% block side %}
+    <div>
+        <div class="page-header">
+            <h1 class="text-center" style="padding-left: 180px;margin-bottom: 0">
+                豆瓣top250影视数据分析系统
+                <small style="font-size: 15px;color: #000000;padding-left: 150px">
+                    {% load filters %}
+                    <img width="40" height="40" src="{{ request.build_absolute_uri|get_url }}{{ img_head }}" class="img-circle">
+                    <a href="{% url 'user' %}" style="color: #000000;">{{ username }}个人中心</a>
+                    <span class="glyphicon glyphicon-log-out" style="padding-left: 20px"><a href="{% url 'home' username %}?state=false" style="color: #000000;">退出登录</a></span>
+                </small>
+            </h1>
+
+        </div>
+        <div style="clear: both;">
+            <form class="form" method="get" action="{% url 'search' username %}">
+                <ul class="form-inline">
+                    <li>
+                        <a class="btn btn-primary" href="{% url 'home' username %}">全部影视数据</a>
+                    </li>
+                    <li class="dropdown" style="margin-left: 20px">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <label for="name">统计信息</label>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'draw' %}?id=year">年份扇形图</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'draw' %}?id=type">电影类型饼状图</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'draw' %}?id=rate">评分扇形图</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'draw' %}?id=country">出品国家柱状图</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'draw' %}?id=rank">排名评分散点图</a></li>
+                        </ul>
+                    </li>
+                    <li style="margin-left: 40px">
+                        <label for="name">年份区间：</label>
+                        <input type="text" name="min_year" class="form-control" style="width: 60px">
+                        ~
+                        <input type="text" name="max_year" class="form-control" style="width: 60px">
+                    </li>
+                    <li style="margin-left: 25px">
+                        <label for="name">电影类型：</label>
+                        <input type="text" name="movie_type" class="form-control" style="width: 60px">
+                    </li>
+                    <li style="margin-left:25px">
+                        <label for="name">评分区间：</label>
+                        <input type="text" name="min_rate" class="form-control" style="width: 60px">
+                        ~
+                        <input type="text" name="max_rate" class="form-control" style="width: 60px">
+                    </li>
+                    <li style="margin-left: 25px">
+                        <label for="name">制片国家：</label>
+                        <input type="text" name="movie_country" class="form-control" style="width: 80px">
+                    </li>
+                    <li style="margin-left: 20px">
+                        <button type="submit" class="btn btn-info" name="if_name" style="width: 60px">搜索</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{#home:全部影视数据#}
+{% block home %}{% endblock %}
+{#search:搜索页面数据#}
+{% block search %}{% endblock %}
+</body>
+</html>

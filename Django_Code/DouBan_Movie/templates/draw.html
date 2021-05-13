@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body style="background-color: #aecad4">
+    <div><h4><a href="{% url 'homepage' %}">
+        <span class="glyphicon glyphicon-home">返回首页</span>
+    </a></h4></div>
+    <div style="width: 100%;height: 750px;" id="main">
+
+    </div>
+    {% block draw %}{% endblock %}
+
+</body>
+</html>

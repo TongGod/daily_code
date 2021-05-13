@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>豆瓣游戏数据可视化分析展示系统</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery.qrcode.min.js' %}"></script>
+</head>
+<body style='background-image: url("{% static 'img/bg2.jpg' %}");background-size: 100%;background-repeat: no-repeat;'>
+    <div id="blue">
+        豆瓣游戏数据可视化分析展示系统
+    </div>
+    <div id="search-wrap">
+        <form method="post" action="{% url 'search' %}">
+            {% csrf_token %}
+            <label>
+                <span class="glyphicon glyphicon-search" style="margin-left: 10px"></span>
+                <input class="search-content" type="text" placeholder="输入搜索内容" name="word"/>
+            </label>
+            <button class="search-btn" type="submit">搜索</button>
+        </form>
+    </div>
+    <div style="margin-top: 120px;" class="text-center">
+        <form action="{% url 'typedraw' %}" method="get">
+            <button type="submit" name="type" id="button">类型评分分析</button>
+            <button type="submit" style="margin-left: 100px" name="platforms" id="button">游戏平台分析</button>
+            <button name="title" type="submit" style="margin-left: 100px" id="button">游戏名称分析</button>
+        </form>
+
+
+    </div>
+
+</body>
+</html>

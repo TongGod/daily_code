@@ -1,0 +1,59 @@
+{% extends "draw.html" %}
+{% block title %}排名评分散点图{% endblock %}
+{% block draw %}
+    <script>
+        var myChart = echarts.init(document.getElementById("main"));
+        var myOption = {
+            title:{
+                text:"排名评分散点图",
+                textStyle:{
+                    fontSize:15,
+                    fontWeight:"bold"
+                },
+                x:"46%",
+                y:"2%"
+            },
+            tooltip:{
+                trigger:"item",
+                axisPointer:{
+                    type: "cross"
+                },
+                formatter:function (params){
+                    var res = "<p>排名：" + params.data[1] + "</p><p>评分：" + params.data[0]+"</p>"
+                    return res
+                }
+            },
+            xAxis: [
+                {
+                    min : 8.2,
+                    max: 9.9,
+                    axisLine :{
+                        show:false
+                    }
+                },
+                {
+                    name: "评分",
+                    nameLocation: "end",
+                }
+            ],
+            yAxis:[
+                {
+                    name:"排名",
+                    nameLocation:"start",
+                    inverse:true,
+                },
+                {
+                    axisLine :{
+                        show:false
+                    }
+                }
+            ],
+            series:[{
+                type: 'scatter',
+                data:{{ data }},
+                symbolSize : 13,
+            }]
+        };
+        myChart.setOption(myOption);
+    </script>
+{% endblock %}

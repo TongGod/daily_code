@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <title>用户登录注册</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+
+    <script src="{% static 'js/sweetalert-dev.js' %}"></script>
+</head>
+
+<body style='background-image: url("{% static 'images/bg.jpg' %}");background-repeat: no-repeat;background-size: 100%'>
+    <div class="content">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form sign-in">
+                <h2>欢迎回来</h2>
+                <label>
+                    <span>用户名</span>
+                    <input type="text" name="user_login"/>
+                </label>
+                <label>
+                    <span>密码</span>
+                    <input type="password" name="pwd_login"/>
+                </label>
+                <button class="submit" type="submit" name="login">登 录</button>
+            </div>
+            <div class="sub-cont">
+                <div class="img">
+                    <div class="img__text m--up">
+                        <h2>还未注册？</h2>
+                        <p>立即注册，发现更多精彩！</p>
+                    </div>
+                    <div class="img__text m--in">
+                        <h2>已有帐号？</h2>
+                        <p>有帐号就登录吧，好久不见了！</p>
+                    </div>
+                    <div class="img__btn">
+                        <span class="m--up">注 册</span>
+                        <span class="m--in">登 录</span>
+                    </div>
+                </div>
+                <div class="form sign-up">
+                    <h2>立即注册</h2>
+                    <label>
+                        <span>用户名</span>
+                        <input type="text" name="user" pattern="^[\u4e00-\u9fa5]{2,7}$|^[\dA-Za-z_]{2,14}$" title="用户名2~7个汉字或2~14字符"/>
+                    </label>
+                    <label>
+                        <span>密码</span>
+                        <input type="password" name="pwd" pattern="^[a-zA-Z]\w{5,17}$" title="字母开头，长度在6~18之间，只能包含字母、数字和下划线"/>
+                    </label>
+                    <button type="submit" class="submit" name="register">注 册</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+
+                {% if flag %}
+                    swal("用户名或密码错误，请重新登录！")
+                {% endif %}
+
+            {% if success %}
+                swal("注册成功，开始登录吧！")
+            {% endif %}
+            {% if already_exis %}
+                swal("该用户已经注册，请登录！")
+            {% endif %}
+            {% if re_em %}
+                swal("注册用户和密码不能为空！")
+            {% endif %}
+        </script>
+	<div style="text-align:center;">
+</div>
+</body>
+
+</html>

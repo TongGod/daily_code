@@ -1,0 +1,64 @@
+{% extends "draw.html" %}
+{% block title %}电影类型饼状图{% endblock %}
+{% block draw %}
+    <script>
+        var myChart = echarts.init(document.getElementById("main"));
+        var myOption = {
+            title:{
+                show : true,
+                text : "电影类型饼状图",
+                textStyle:{
+                    color:"black",
+                    fontWeight:'bolder',
+                    fontFamily : 'sans-serif',
+                    fontSize : 25,
+                },
+                x:"center",
+                y:"5%"
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: [{
+                data: {% autoescape off %}{{ s_data }}{% endautoescape %},
+                icon: "roundRect",
+                top: '10%',
+                left: '80%',
+                y: 'center',
+                orient: 'vertical'
+            },{
+                data: {% autoescape off %}{{ e_data }}{% endautoescape %},
+                icon: "roundRect",
+                top: '10%',
+                left: '85%',
+                y: 'center',
+                x:'10%',
+                orient: 'vertical'
+            }],
+            series: [
+                {
+                    name: '电影类型数量',
+                    type: 'pie',
+                    radius: '50%',
+                    avoidLabelOverlap: true,
+                    label: {
+                        show: true,
+                        position: 'outside',
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '40',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: {% autoescape off %}{{ type_data }}{% endautoescape %},
+                }
+            ]
+        };
+        myChart.setOption(myOption);
+    </script>
+{% endblock %}

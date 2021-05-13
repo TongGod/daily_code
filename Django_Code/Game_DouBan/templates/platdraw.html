@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>游戏平台分析</title>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+    <div class="page-header text-center">
+        <h2><strong>游戏平台分析</strong></h2>
+    </div>
+    <div class="container">
+        <ul class="list-group">
+            <li class="list-group-item" style="width: 100%;height: 550px">
+                <div class="col-md-8" id="plat_draw1" style="width: 100%;height: 550px"></div>
+            </li>
+            <li class="list-group-item" style="width: 100%;height: 550px;margin-top: 30px">
+                <div class="col-md-8" id="plat_draw2" style="width: 100%;height: 550px"></div>
+            </li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('plat_draw1'));
+        var myOption = {
+            title: {
+                text: "平台平均评分折线图"
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['平台平均评分']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: {readOnly: false},
+                    magicType: {type: ['line', 'bar']},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+                xAxis: {
+                    name:'游戏平台',
+                    type: 'category',
+                    boundaryGap: false,
+                    data: {% autoescape off %}{{ avg_dic.rate_plat_list }}{% endautoescape %}
+                },
+                yAxis: {
+                    name:'评分',
+                    type: 'value',
+                    min:'8',
+                    max:'9'
+                },
+                series: [{
+                    name: '平台平均评分',
+                    type: 'line',
+                    data: {{ avg_dic.avg_list }},
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    }
+                }]
+        }
+        myChart.setOption(myOption);
+    </script>
+    <script type="text/javascript">
+        var myChart2 = echarts.init(document.getElementById('plat_draw2'));
+        var myOption2 = {
+            title:{
+                show : true,
+                text : "游戏平台数量分析",
+                textStyle:{
+                    color:"black",
+                    fontWeight:'bolder',
+                    fontFamily : 'sans-serif',
+                    fontSize : 25,
+                },
+                x:"center",
+                y:"10%"
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                top: '10%',
+                left: '80%',
+                y: 'center',
+                orient: 'vertical'
+            },
+            series: [
+                {
+                    name: '游戏平台数量',
+                    type: 'pie',
+                    radius: ['30%', '50%'],
+                    avoidLabelOverlap: true,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: true,
+                        position: 'outside'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '40',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: {% autoescape off %}{{ plat_data }}{% endautoescape %},
+                }
+            ]
+        };
+        myChart2.setOption(myOption2);
+    </script>
+</body>
+</html>

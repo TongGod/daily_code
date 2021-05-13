@@ -1,0 +1,7 @@
+1.下载pandas
+    pip install pandas --default-timeout=100 -i https://pypi.tuna.tsinghua.edu.cn/simple
+    阿里源 https://mirrors.aliyun.com/pypi/simple/
+    中国科学技术大学 https://pypi.mirrors.ustc.edu.cn/simple/
+2.更新pip
+    pip install -i https://pypi.douban.com/simple --upgrade pip
+    更新失败直接使用命令  easy_install pip

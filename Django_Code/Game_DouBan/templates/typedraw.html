@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=Content-Type content="text/html; charset=gb2312">
+    <title>类型评分分析</title>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body>
+    <div class="page-header text-center">
+        <h2><strong>游戏类型评分分析</strong></h2>
+    </div>
+    <div class="container">
+        <ul class="list-group">
+            <li class="list-group-item" style="width: 100%;height: 550px">
+                <div class="col-md-8" id="type_draw1" style="width: 100%;height: 550px"></div>
+            </li>
+            <li class="list-group-item" style="width: 100%;height: 550px;margin-top: 30px">
+                <div class="col-md-8" id="type_draw2" style="width: 100%;height: 550px"></div>
+            </li>
+            <li class="list-group-item" style="width: 100%;height: 900px;margin-top: 30px">
+                <div class="col-md-8" id="type_draw3" style="width: 100%;height: 900px"></div>
+            </li>
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var myChart1 = echarts.init(document.getElementById('type_draw1'));
+        var myOption1 = {
+            title:{
+                show : true,
+                text : "平均评论人数分析",
+                textStyle:{
+                    color:"black",
+                    fontWeight:'bolder',
+                    fontFamily : 'sans-serif',
+                    fontSize : 25,
+                }
+            },
+            tooltip : {
+                trigger : 'axis',
+                position : 'top',
+                axisPointer : {
+                    type : 'cross',
+                    label : {
+                        backgroundColor : '#6a7985'
+                    }
+                }
+            },
+            grid : {
+                left : '4%',
+                right : '6%',
+                bottom : '4%',
+                top : 80,
+                containLabel : true
+            },
+            legend:{
+                data:['平均评分人数'],
+                right: '20%'
+            },
+            xAxis: {
+                name:'类型',
+                type: 'category',
+                boundaryGap : true,
+                data: {% autoescape off %}{{ type_x }}{% endautoescape %},
+                axisLabel : {
+                    show : true,
+                    fontSize : 15,
+                    color : 'black',
+                    rotate: 30,
+                    interval: 0
+                },
+            },
+            yAxis: {
+                name:'平均评分人数',
+                type: 'value',
+                    axisLabel : {
+                    fontSize : 15
+                },
+            },
+            series: [{
+                name:'平均评分人数',
+                data: {{ type_y }},
+                type: 'line',
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                }
+            }]
+        };
+        myChart1.setOption(myOption1);
+    </script>
+    <script type="text/javascript">
+        var myChart2 = echarts.init(document.getElementById('type_draw2'));
+        var myOption2 = {
+            title:{
+                show : true,
+                text : "类型的平均评分分析",
+                textStyle:{
+                    color:"black",
+                    fontWeight:'bolder',
+                    fontFamily : 'sans-serif',
+                    fontSize : 25,
+                }
+            },
+            tooltip : {
+                trigger : 'axis',
+                position : 'top',
+                axisPointer : {
+                    type : 'cross',
+                    label : {
+                        backgroundColor : '#6a7985'
+                    }
+                }
+            },
+            grid : {
+                left : '4%',
+                right : '6%',
+                bottom : '4%',
+                top : 80,
+                containLabel : true
+            },
+            legend:{
+                data:['每个类型的平均评分'],
+                right: '20%'
+            },
+            xAxis: {
+                name:'类型',
+                type: 'category',
+                boundaryGap : true,
+                data: {% autoescape off %}{{ type_x }}{% endautoescape %},
+                axisLabel : {
+                    show : true,
+                    fontSize : 15,
+                    color : 'black',
+                    rotate: 30,
+                    interval: 0
+                },
+            },
+            yAxis: {
+                name:'每个类型的平均评分',
+                type: 'value',
+                    axisLabel : {
+                    fontSize : 15
+                },
+                min:8,
+                max:9.5
+            },
+            series: [{
+                name:'每个类型的平均评分',
+                data: {{ rating_y }},
+                type: 'line',
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                }
+            }]
+        };
+        myChart2.setOption(myOption2);
+    </script>
+    <script type="text/javascript">
+        var myChart3 = echarts.init(document.getElementById('type_draw3'));
+        var myOption3 = {
+            title:{
+                show : true,
+                text : "9.0评分以上的类型数量分析",
+                textStyle:{
+                    color:"black",
+                    fontWeight:'bolder',
+                    fontFamily : 'sans-serif',
+                    fontSize : 25,
+                },
+                x:"center",
+                y:"10%"
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                top: '10%',
+                left: '80%',
+                y: 'center',
+                orient: 'vertical'
+            },
+            series: [
+                {
+                    name: '9.0评分以上类型数量',
+                    type: 'pie',
+                    radius: ['30%', '50%'],
+                    avoidLabelOverlap: true,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: true,
+                        position: 'outside'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '40',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: {% autoescape off %}{{ pie_data }}{% endautoescape %},
+                }
+            ]
+        };
+        myChart3.setOption(myOption3);
+    </script>
+</body>
+</html>

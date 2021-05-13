@@ -1,0 +1,11 @@
+1.创建项目  django-admin startproject 项目名称
+2.将数据库与模型同步   python manage.py migrate
+3.启动开发服务器   python manage.py runserver
+    python manage.py runserver ip:端口号
+4.创建应用程序
+    python manage.py startapp 应用名称
+5.创建初始迁移
+    python manage.py makemigrations 应用程序名
+6.创建一个用户并管理站点
+    python manage.py createsuperuser
+

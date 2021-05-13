@@ -1,0 +1,41 @@
+{% extends "blog/base.html" %}
+
+{% block title%}{{ post.title }}{% endblock%}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p class="date">
+        Published {{ post.publish }} by {{ post.author }}
+    </p>
+    {{ post.body|linebreaks }}
+
+    {% with comments.count as total_comments %}
+        <h2>
+           共{{ total_comments }}条评论
+        </h2>
+    {% endwith %}
+
+    {% for comment in comments %}
+        <div class="comment">
+            <p class="info">
+                Comment {{ forloop.counter }} by {{ comment.name }}
+                {{ comment.created }}
+            </p>
+            {{ comment.body|linebreaks }}
+        </div>
+        {% empty %}
+        <p>现在没有评论。</p>
+    {% endfor %}
+<!--    如果new_comment对象已存在， 则显示一条成功消息-->
+    {% if new_comment %}
+        <h2>您的评论已添加。</h2>
+    {% else %}
+        <h2>添加一条新评论:</h2>
+        <form action="." method="post">
+            {{ comment_form.as_p }}
+            {% csrf_token %}
+            <br>
+            <input type="submit" value="提交评论"/>
+        </form>
+    {% endif %}
+{% endblock%}

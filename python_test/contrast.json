@@ -1,0 +1,66 @@
+{
+    "calculateStatus": "regressed",
+    "allData": [
+        {
+            "project": "lanyuan15000",
+            "regressionData": [
+                {
+                    "testcaseId": "3",
+                    "testcaseName": "2222",
+                    "UUID": "#",
+                    "versionid": "135",
+                    "versionName": "#",
+                    "testcaseTypeName": "222",
+                    "laststate": "runned",
+                    "lasttime": "2021-01-29 12:37:28",
+                    "impact_value": "0",
+                    "fiximpact_value": "0",
+                    "sectionRatio": "0",
+                    "m_run_fun": [1]
+                },
+                {
+                    "testcaseId": "6",
+                    "testcaseName": "222222222",
+                    "UUID": "a9c79a72fd566a152b6a567b7f26d710",
+                    "versionid": "135",
+                    "versionName": "#",
+                    "testcaseTypeName": "22222222222",
+                    "laststate": "runned",
+                    "lasttime": "2021-01-28 12:39:24",
+                    "impact_value": "0",
+                    "fiximpact_value": "0",
+                    "sectionRatio": "0",
+                    "m_run_fun": []
+                },
+                {
+                    "testcaseId": "7",
+                    "testcaseName": "4444444444",
+                    "UUID": "a9c79a72fd566a152b6a567b7926d710",
+                    "versionid": "135",
+                    "versionName": "#",
+                    "testcaseTypeName": "22222222222",
+                    "laststate": "runned",
+                    "lasttime": "2021-01-29 12:41:26",
+                    "impact_value": "0",
+                    "fiximpact_value": "0",
+                    "sectionRatio": "0",
+                    "m_run_fun": []
+                },
+                {
+                    "testcaseId": "9",
+                    "testcaseName": "33333",
+                    "UUID": "a9c79a72fd566a8152b6a597b7921d710",
+                    "versionid": "138",
+                    "versionName": "#",
+                    "testcaseTypeName": "33333",
+                    "laststate": "runned",
+                    "lasttime": "2021-01-29 12:51:29",
+                    "impact_value": "0",
+                    "fiximpact_value": "0",
+                    "sectionRatio": "0",
+                    "m_run_fun": []
+                }
+            ]
+        }
+    ]
+}

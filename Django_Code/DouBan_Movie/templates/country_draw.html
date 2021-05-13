@@ -1,0 +1,80 @@
+{% extends "draw.html" %}
+{% block title %}出品国家柱状图{% endblock %}
+{% block draw %}
+<script>
+    var myChart = echarts.init(document.getElementById("main"));
+    var myOption = {
+         legend:{
+             show:true,
+             x:'80%',
+             y:'2%'
+         },
+         toolbox: { //可视化的工具箱
+             y:'2%',
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                },
+                magicType: {//动态类型切换
+                    type: ['bar', 'line']
+                }
+            }
+        },
+        title: {
+            show: true,
+            text: "出品国家柱状图",
+            textStyle: {
+                color: "black",
+                fontWeight: 'bolder',
+                fontFamily: 'sans-serif',
+                fontSize: 25,
+            },
+            x: "center",
+            y:'2%'
+        },
+        xAxis: {
+            name: '国家',
+            type: 'category',
+            data: {% autoescape off %}{{ country_name }}{% endautoescape %},
+            axisTick: {
+                alignWithLabel: true,
+            },
+            axisLabel: {
+                interval: 0,
+                rotate: 30
+            }
+        },
+        yAxis: {
+            type: 'value'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        series: [{
+            name:'国家数量',
+            data: {% autoescape off %}{{ country_num }}{% endautoescape %},
+            type: 'bar',
+            barWidth: '60%',
+            showBackground: true,
+            backgroundStyle: {
+                color: 'rgba(180, 180, 180, 0.2)'
+            },
+            itemStyle: {normal: {label: {show: true, position: 'top', textStyle: {color: '#000000'}}}},
+        }]
+    };
+    myChart.setOption(myOption);
+</script>
+{% endblock %}

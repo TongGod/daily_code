@@ -1,0 +1,82 @@
+{% extends 'homebase.html' %}
+{% block context %}
+<div style="background-color: #E7E7E7">
+    <div>
+        <span class="label label-info" style="float: left;font-size: 18px;line-height: normal">
+            分&nbsp;&nbsp;&nbsp;类:
+        </span>
+        <ul class="list-group list-inline">
+            <li class="list-group-item-{{ all_state }}" style="font-size: 15px;margin-top: 3px;margin-left: 10px;">
+                <a href="{% url 'hengyansort' %}?sort=all_sort">全部分类</a>
+            </li>
+            <li class="list-group-item-{{ one_state }}" style="font-size: 15px;margin-top: 3px;margin-left: 10px;">
+                <a href="{% url 'hengyansort' %}?sort=one_sort">玄幻</a>
+            </li>
+            <li class="list-group-item-{{ two_state }}" style="font-size: 15px;margin-top: 3px;margin-left: 10px;">
+                <a href="{% url 'hengyansort' %}?sort=two_sort">言情</a>
+            </li>
+            <li class="list-group-item-{{ three_state }}" style="font-size: 15px;margin-top: 3px;margin-left: 10px;">
+                <a href="{% url 'hengyansort' %}?sort=three_sort">都市</a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <span class="label label-info" style="float: left;font-size: 18px;line-height: normal">点击榜:</span>
+        <ul class="list-group list-inline" style="margin-bottom: 0;line-height:2">
+            <li class="list-group-item-{{ state1 }}" style="font-size: 15px;margin-top: 3px;margin-left: 10px;"><a href="{% url 'hengyansort' %}?sort={{ sort }}&order=min_max">点击数从小到大</a></li>
+            <li class="list-group-item-{{ state2 }}"  style="font-size: 15px;margin-top: 3px;margin-left: 10px;"><a href="{% url 'hengyansort' %}?sort={{ sort }}&order=max_min">点击数从大到小</a></li>
+        </ul>
+    </div>
+</div>
+<div class="text-center">
+    <table class="table table-hover table-bordered table-condensed" style="border-color: #070707;">
+        <tr>
+            <th>排名</th>
+            <th>小说名</th>
+            <th>小说简介</th>
+            <th>点击数</th>
+            <th>标签</th>
+            <th>类别</th>
+        </tr>
+        {% for hy in hengyan %}
+            <tr>
+                <td>{{ hy.top }}</td>
+                <td>{{ hy.bookname }}</td>
+                <td>{% autoescape off %}{{ hy.info }}{% endautoescape %}</td>
+                <td>{{ hy.click }}</td>
+                <td>{{ hy.label }}</td>
+                <td>{{ hy.type }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="text-center">
+        {% if data %}
+            <ul id="pages" class="pagination">
+                {% if data.first %}
+                    <li><a href="{% url 'hengyansort' %}?page=1&sort={{ sort }}&order={{ order }}">1</a></li>
+                {% endif %}
+                {% if data.left %}
+                    {% if data.left_has_more %}
+                        <li><span>...</span></li>
+                    {% endif %}
+                    {% for i in data.left %}
+                        <li><a href="{% url 'hengyansort' %}?page={{ i }}&sort={{ sort }}&order={{ order }}">{{ i }}</a></li>
+                    {% endfor %}
+                {% endif %}
+                <li class="active"><a href="{% url 'hengyansort' %}?page={{ data.page }}&sort={{ sort }}&order={{ order }}">{{ data.page }}</a></li>
+                {% if data.right %}
+                    {% for i in data.right %}
+                        <li><a href="{% url 'hengyansort' %}?page={{ i }}&sort={{ sort }}&order={{ order }}">{{ i }}</a></li>
+                    {% endfor %}
+                    {% if data.right_has_more %}
+                        <li><span>...</span></li>
+                    {% endif %}
+                {% endif %}
+                {% if data.last %}
+                    <li><a href="{% url 'hengyansort' %}?page={{ data.total_pages }}&sort={{ sort }}&order={{ order }}">{{ data.total_pages }}</a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}
